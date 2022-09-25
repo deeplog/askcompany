@@ -115,4 +115,3 @@ class Tag(models.Model):
 * blank/null 은 최소화
 * 직접 유효성 로직을 만들지 말고 장고의 기능을 가져다 쓸 것 !!!
 * validation은 Tight 하게 지정
-* 
