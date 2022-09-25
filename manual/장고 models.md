@@ -60,3 +60,59 @@ python manage.py shell
     sqlite>.schedma shop_item
     sqlite>.quit
     ```
+### 장고 모델 필드 타입
+
+* primary Key: AutoField
+* 문자열 
+* 날짜/시간
+* Relationship Types
+  * ForeignKey
+  * ManyToManyField
+  * OneToOneField
+
+### 장고 모델 예제
+
+```python
+from django.conf import settings
+from django.db import models
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    blog_url = models.URLField(blank=True)
+
+class Post(models.Model):
+    '''
+    블로그 포스트
+    '''
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100, db_index=True)
+    slug = models.SlugField(allow_unicode=True, db_column=True) #제목과 숫자로 이루어진 url 생성시 사용
+    desc = models.TextField(blank=True) # 빈문자열도 허용
+    image = models.ImageField(blank=True)
+    comment_count = models.PositiveIntegerField(default=0) # 양수만 처리
+    tag_set = models.ManyToManyField('Tag', blank=True) # 하나의 포스트는 다수의 태그
+    is_publish = models.BooleanField(default = False)
+    created_at = models.DateTimeField(auto_now_add = True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+class Comment(models.Model):
+    '''
+    한명의 유저가 여러 개의 댓글
+    '''
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now==True)
+    
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+```
+
+### 중요
+
+* blank/null 은 최소화
+* 직접 유효성 로직을 만들지 말고 장고의 기능을 가져다 쓸 것 !!!
+* validation은 Tight 하게 지정
+* 
