@@ -67,7 +67,6 @@ class PostAdmin(admin.ModelAdmin):
     list_display_links = ['id','message']
     list_filter = ['created_at', 'is_public']
     search_fields = ['message']
-
     pass
 ```
 
