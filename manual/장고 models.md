@@ -115,3 +115,38 @@ class Tag(models.Model):
 * blank/null 은 최소화
 * 직접 유효성 로직을 만들지 말고 장고의 기능을 가져다 쓸 것 !!!
 * validation은 Tight 하게 지정
+
+### Media 파일
+FileField/ImageField가 있음
+
+1. models에서 이미지 필드를 지정한다.   
+필요시 pillow를 설치한다. 
+```python
+#instagram/models.py
+class Post(models.Model):
+    photo = models.ImageField(blank=True, upload_to='instagram/post/%Y%m%d') #upload_to 옵션을 지정해서 파일을 상세 폴더로 분기함
+```
+```shell
+pip install pillow
+python manage.py makemigrations instagram
+python manage.py migrate instagram
+```
+2. MEDIA 파일이 저장될 경로를 셋팅한다.
+```python
+# askcompany/settings.py
+MEDIA_URL ='/media/'
+MEDIA_ROOT =os.path.join(BASE_DIR, 'media')
+
+#instagram/urls.py
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+```
+3. Admin 화면에서 이미지가 보이게 한다. 
+```python
+#instagram/admin.py
+list_display = ['id', 'photo_tag', 'message', 'message_length', 'is_public', 'created_at', 'updated_at'] #디스플레이에 출력할 컬럼 지정
+def photo_tag(self, post):
+    if post.photo:
+        return mark_safe(f'<img src="{post.photo.url}" style="width: 72px;" />')
+    return None
+```
+

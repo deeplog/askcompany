@@ -13,11 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+
+#askcompany settings + django.conf.global_settings
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog1/', include('blog1.urls')),
     path('instaram/', include('instagram.urls')),
 ]
+
+# 이 설정을 하지 않아도 default로 settings에서 설정해준 media 폴더에 파일이 생성된다.
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
