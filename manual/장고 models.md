@@ -150,3 +150,70 @@ def photo_tag(self, post):
     return None
 ```
 
+### QuerySet을 통한 간단 검색 구현
+1. url 매핑 
+```python
+#instagram/urls.py
+urlpatterns = [
+    path('', views.post_list),
+]
+```
+2. filter 기능 구현
+```python
+#instagram/views.py
+from django.shortcuts import render
+from .models import Post
+
+def post_list(reqeust):
+    qs = Post.objects.all()
+    q = reqeust.GET.get('q','') # q key가 있으면 가져오고, 없으면 ''
+    if q:
+        qs = qs.filter(message__icontains=q) # 필터링 기능 구현이 됨
+        #instagram/templates/instagram/post_list.html
+    return render(reqeust, 'instagram/post_list.html', {
+        'post_list':qs,
+        'q':q, #검색어 자체를 전달하기 위해서
+        })
+```
+3. html 화면 UI
+* {{post.photo.url}} 예외 없이 작동하기 위해서 if문 처리
+* bootstrap 활용 
+* table tag 활용하여 가독성 증가
+```html
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <title>Instagram / Post List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+<body>
+    <form action="" method="get">
+        <input type="text" name="q" value="{{ q }}"/>
+        <input type="submit" value="검색"/>
+    </form>
+
+    <table class="table table-bordered table-hover">
+        <tbody>
+            {% for post in post_list %}
+                <tr>
+                    <td>
+                        {% if post.photo %}
+                            <img src="{{ post.photo.url}}" style="width: 100px;"/>
+                        {% else %}
+                            No Photo
+                        {% endif%}
+                    </td>
+                    <td>
+                        {{ post.message }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
+```
+
+

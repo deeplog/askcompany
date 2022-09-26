@@ -10,7 +10,7 @@ class Post(models.Model):
 
     # 객체에 대한 문자열 제공
     def __str__(self):
-         return f"Custom Post object ({self.id})"
+         return f"{self.message}"
 
     def message_length(self):
         return len(self.message)
