@@ -216,4 +216,67 @@ def post_list(reqeust):
 
 ```
 
+### QuerySet 간단하게 활용하기
 
+pip install django-extensions
+settings.py 에서 django_extensions 추가 (_임에 유의할 것)
+python manage.py shell_plus --print-sql --ipython
+
+```python
+In [1]: from instagram.models import Post
+
+In [2]: Post.objects.all()
+Out[2]: SELECT "instagram_post"."id",
+       "instagram_post"."message",
+       "instagram_post"."photo",
+       "instagram_post"."is_public",
+       "instagram_post"."created_at",
+       "instagram_post"."updated_at"
+  FROM "instagram_post"
+ LIMIT 21
+
+Execution time: 0.000997s [Database: default]
+<QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>]>
+
+```
+
+```python
+#Meta Setting
+ class Meta:
+        ordering = ['-id']
+```
+다음과 같이 ordering 된 결과가 나옴
+```python
+In [1]: Post.objects.all().order_by("created_at")
+Out[1]: SELECT "instagram_post"."id",
+       "instagram_post"."message",
+       "instagram_post"."photo",
+       "instagram_post"."is_public",
+       "instagram_post"."created_at",
+       "instagram_post"."updated_at"
+  FROM "instagram_post"
+ ORDER BY "instagram_post"."created_at" DESC
+ LIMIT 21
+
+```
+
+### QuerySet에 범위 조건 추가
+단, negative indexing은 지원하지 않는다., 
+step은 가능하면 사용하지 않을 것을 권함, step은 쿼리에 대응하지 않음
+결과물로 나온값에 step을 적용하여 리스트로 반환
+```python
+In [3]:  Post.objects.all()[:2]
+Out[3]: SELECT "instagram_post"."id",
+       "instagram_post"."message",
+       "instagram_post"."photo",
+       "instagram_post"."is_public",
+       "instagram_post"."created_at",
+       "instagram_post"."updated_at"
+  FROM "instagram_post"
+ ORDER BY "instagram_post"."id" DESC
+ LIMIT 2
+
+Execution time: 0.000000s [Database: default]
+<QuerySet [<Post: 두번째 메세지>, <Post: 첫번째 메세지>]>
+
+```
