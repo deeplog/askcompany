@@ -218,9 +218,9 @@ def post_list(reqeust):
 
 ### QuerySet 간단하게 활용하기
 
-pip install django-extensions
-settings.py 에서 django_extensions 추가 (_임에 유의할 것)
-python manage.py shell_plus --print-sql --ipython
+pip install django-extensions  
+settings.py 에서 django_extensions 추가 (_임에 유의할 것)  
+python manage.py shell_plus --print-sql --ipython  
 
 ```python
 In [1]: from instagram.models import Post
