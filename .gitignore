@@ -3,3 +3,6 @@
 /sqlite3.exe
 __pycache__*/
 migrations*/
+media/
+*.jpg
+*.gitignore
