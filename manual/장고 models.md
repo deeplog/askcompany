@@ -278,5 +278,41 @@ Out[3]: SELECT "instagram_post"."id",
 
 Execution time: 0.000000s [Database: default]
 <QuerySet [<Post: 두번째 메세지>, <Post: 첫번째 메세지>]>
+```
+
+### django-debug-toolbar
+
+설치
+```shell
+pip install django-debug-toolbar
+```
+```python
+# settings에 APP 추가 'debug_toolbar',
+INSTALLED_APPS = [
+    ...
+    'debug_toolbar',
+    ...
+]
+
+# 프로젝트 폴더 내 urls.py
+if settings.DEBUG:
+      ...
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls))
+    ]
+
+#settings.py에서 
+#middleware 추가
+MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+  ]
+
+
+INTERNAL_IPS = ['127.0.0.1']
 
 ```
+
+주의사항
+* 웹페이지 탬플릿에 body tag 있어야  debug-toolbar가 나옴
+* 운영시에는 settings.DEBUG를 False로 셋팅할 것

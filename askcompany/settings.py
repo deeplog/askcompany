@@ -40,12 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # third apps
     'django_extensions',
+    'debug_toolbar',
     #local apps
     'blog1',
     'instagram',
 ]
 
+# View가 호출되기 전/후에 호출이 되는 여러 함수들
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -127,3 +130,5 @@ STATIC_URL = '/static/'
 
 MEDIA_URL ='/media/'
 MEDIA_ROOT =os.path.join(BASE_DIR, 'media')
+
+INTERNAL_IPS = ['127.0.0.1']

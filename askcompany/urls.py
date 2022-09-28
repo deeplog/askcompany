@@ -29,3 +29,8 @@ urlpatterns = [
 # 이 설정을 하지 않아도 default로 settings에서 설정해준 media 폴더에 파일이 생성된다.
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls))
+    ]
