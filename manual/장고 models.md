@@ -1,11 +1,11 @@
 목차   
-[1. 장고 ORM 소개](#장고-ORM)   
-[2. 장고 Model](#장고-Model)   
-[3. 장고 Model 실습](#장고-Model-실습)   
-[4. 장고 모델 예제](#장고-모델-예제)   
+[1. 장고 모델(ORM) 소개](#장고-모델-(ORM)-소개)   
+[2. 장고 모델 필드](#장고-모델-필드)   
+[3. QuerySet을 통한 간단 검색 구현](#QuerySet을-통한-간단-검색-구현)   
+[4. QuerySet의 정렬 및 범위 조건](#QuerySet의-정렬-및-범위-조건)   
 [5. django-debug-toolbar](#django-debug-toolbar)
 
-장고 ORM
+장고 모델 (ORM) 소개 
 ---
 
 Object Relational mapping   
@@ -27,7 +27,7 @@ python manage.py shell
 >>> cursor.close()
 ```
 
-장고 Model
+장고 모델 필드
 ---
 
 클래스 명은 Pascal Case 네이밍   
@@ -40,9 +40,6 @@ python manage.py shell
 
 외부 데이터베이스 형상을 활용하는 경우
 * inspectdb 명령 사용
-
-장고 Model 실습
----
 
 ### 장고 앱 만들고 등록 하기 
 * instagram 앱 생성
@@ -82,9 +79,7 @@ python manage.py shell
   * ManyToManyField
   * OneToOneField
 
-장고 모델 예제
----
-
+### 장고 모델 예제
 
 ```python
 from django.conf import settings
@@ -164,7 +159,9 @@ def photo_tag(self, post):
     return None
 ```
 
-### QuerySet을 통한 간단 검색 구현
+QuerySet을 통한 간단 검색 구현
+-------------------------------
+
 1. url 매핑 
 ```python
 #instagram/urls.py
@@ -274,7 +271,9 @@ Out[1]: SELECT "instagram_post"."id",
 
 ```
 
-### QuerySet에 범위 조건 추가
+QuerySet의 정렬 및 범위 조건
+---------------------------
+
 단, negative indexing은 지원하지 않는다., 
 step은 가능하면 사용하지 않을 것을 권함, step은 쿼리에 대응하지 않음
 결과물로 나온값에 step을 적용하여 리스트로 반환
