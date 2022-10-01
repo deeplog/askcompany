@@ -1,4 +1,6 @@
 목차   
+------
+
 [1. 장고 모델(ORM) 소개](#장고-모델-(ORM)-소개)   
 [2. 장고 모델 필드](#장고-모델-필드)   
 [3. Media 파일 다루기](#Media-파일-다루기)   
@@ -430,4 +432,25 @@ post = models.ForeignKey(Post, ..., related_name="instagram_post_set")
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE,
                              limit_choices_to={'is_public':True})
+```
+
+OneToOneField
+------------
+
+1:1 관계에서 사용한다.   
+ForeignKey와 유사하지만 reverse_name에서 차이가 있다 
+O2O에서는 모델명을 그대로 지정한다. 
+
+    profile.user_set.first() --> user  : FK인 경우
+    profile.user --> user : O2O인 경우
+
+OnetoOneField 예제 
+```python
+from django.db import models
+from django.conf import settings
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    address = models.CharField(max_length=100)
+    zipcode = models.CharField(max_length=6) #, validators=[])
 ```
