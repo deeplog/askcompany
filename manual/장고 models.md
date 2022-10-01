@@ -1,11 +1,11 @@
 목차   
 [1. 장고 모델(ORM) 소개](#장고-모델-(ORM)-소개)   
 [2. 장고 모델 필드](#장고-모델-필드)   
-[3. Media 파일 다루기](#Media-파일-다루기)
-[4. QuerySet을 통한 간단 검색 구현](#QuerySet을-통한-간단-검색-구현)   
+[3. Media 파일 다루기](#Media-파일-다루기)   
+[4. QuerySet을 통한 간단 검색 구현](#QuerySet을-통한-간단-검색-구현)     
 [5. QuerySet의 정렬 및 범위 조건](#QuerySet의-정렬-및-범위-조건)   
-[6. django-debug-toolbar](#django-debug-toolbar)
-[7. ForeignKey](#ForeignKey)
+[6. django-debug-toolbar](#django-debug-toolbar)   
+[7. ForeignKey](#ForeignKey)  
 
 장고 모델 (ORM) 소개 
 ---
