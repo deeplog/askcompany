@@ -25,6 +25,7 @@ urlpatterns = [
     path('blog1/', include('blog1.urls')),
     path('instagram/', include('instagram.urls')),
     path('accounts/', include('accounts.urls')),
+    path('analysis/', include('analysis.urls')),
 ]
 
 # 이 설정을 하지 않아도 default로 settings에서 설정해준 media 폴더에 파일이 생성된다.

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'accounts',
     'blog1',
     'instagram',
+    'analysis',
 ]
 
 # View가 호출되기 전/후에 호출이 되는 여러 함수들
