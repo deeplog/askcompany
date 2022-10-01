@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import Post
+from .models import Post, Comment
 
 @admin.register(Post) #장식자 문법으로 표현
 class PostAdmin(admin.ModelAdmin):
@@ -15,3 +15,6 @@ class PostAdmin(admin.ModelAdmin):
             return mark_safe(f'<img src="{post.photo.url}" style="width: 72px;" />')
         return None
 
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass

@@ -1,4 +1,6 @@
-### 장고 ORM
+장고 ORM
+---
+
 Object Relational mapping   
 어떤 sql이 쓰여 있는지 파악을 하고 최적화 할 수 있어야 함   
 RDB 만을 지원한다.    
@@ -18,7 +20,9 @@ python manage.py shell
 >>> cursor.close()
 ```
 
-### 장고 Model
+장고 Model
+---
+
 클래스 명은 Pascal Case 네이밍   
 
 모델 생성 순서
@@ -30,9 +34,10 @@ python manage.py shell
 외부 데이터베이스 형상을 활용하는 경우
 * inspectdb 명령 사용
 
-### 장고 Model 실습
+장고 Model 실습
+---
 
-장고 앱 만들고 등록 하기 
+### 장고 앱 만들고 등록 하기 
 * instagram 앱 생성
     ```shell
     python manage.py startapp instagram
@@ -70,7 +75,9 @@ python manage.py shell
   * ManyToManyField
   * OneToOneField
 
-### 장고 모델 예제
+장고 모델 예제
+---
+
 
 ```python
 from django.conf import settings
@@ -280,9 +287,10 @@ Execution time: 0.000000s [Database: default]
 <QuerySet [<Post: 두번째 메세지>, <Post: 첫번째 메세지>]>
 ```
 
-### django-debug-toolbar
+django-debug-toolbar
+---
 
-설치
+### 설치
 ```shell
 pip install django-debug-toolbar
 ```
@@ -313,6 +321,104 @@ INTERNAL_IPS = ['127.0.0.1']
 
 ```
 
-주의사항
+### 주의사항
 * 웹페이지 탬플릿에 body tag 있어야  debug-toolbar가 나옴
 * 운영시에는 settings.DEBUG를 False로 셋팅할 것
+
+ForeignKey
+---
+
+### RDBM에서의 관계 예시
+
+  1:N 관계: models.ForeignKey  
+  1:1 관계: models.OneToOneField  
+  M:N 관계: models.ManyToMany  
+  
+### ForeignKey
+
+1:N 관계에서 N측에 명시   
+
+```python
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+```
+to: 대상 모델   
+
+on_delete: 삭제시 Rule
+* CACADE: FK로 참조된 다른 모델의 Record도 삭제
+* SET_NULL, SET_DEFAULT등의 옵션이 있음
+
+### 올바른 User 모델 지정
+
+```python
+## setting.py 에서 
+AUTH_USER_MODEL = 'auth.User'
+
+## instgram.models.py 에서 
+from django.conf import settings
+
+class Post(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField()
+```
+
+admin에 등록하기
+``` python
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass
+```
+
+### FK 에서의  Reverse_name
+
+reverse_name  (==> 역참조하는 모델명_set)
+post와 comment의 관계는 1:n 관계이며,  
+comment는 post를 foreignkey에 의해 정참조 하고 있음.   
+post에서 comment를 참조하고 싶은데 참조할려면 어떻게 해야 하는가?   
+`post.comment_set` 으로 접근하며 `comment_set` reverse name이라고 한다. 
+
+```python
+class Post(models.Model):
+    message = models.TextField()
+    photo = models.ImageField(blank=True, upload_to='instagram/post/%Y%m%d') #upload_to 옵션을 지정해서 파일을 상세 폴더로 분기함
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+```
+
+```python
+## 포스팅에 속한 댓글을 가져오는 방법
+##  모두 같은 결과를 내는 코드임
+Comment.objects.filter(post_id = 2) #post의 id가 2인 comment를 얻어온다.
+Comment.objects.filter(post__id = 2) #post는 외래키인데 그 외래키에 속한 id를 얻어얼수도 있다.
+Comment.objects.filter(post = post) # post에 직접 적용하는 방법
+
+# 가장 보기 좋은 코드임 (외래키에서의 Reverse Name)
+# 모델명소문자_set 이 default로 생김
+post.comment_set.all()
+```
+### reverse_name 이름 충돌
+
+만약에 comment라는 모델이 blog와 instagram 앱에 모두 존재하는 경우    
+각 comment는 post를 참조한다면 이름이 충돌이 날 수 있다.  
+아래와 같이 이름 충돌을 회피하는 코드를 작성한다. 
+
+```python
+# revers_name을 변경
+# blog 엡의 comment
+post = models.ForeignKey(Post, ..., related_name ="blog_post_set")
+# instagram 앱의 comment
+post = models.ForeignKey(Post, ..., related_name="instagram_post_set")
+```
+### limit_choices_to
+ ForeignKey 셋팅하는 부분에서 
+ 선택항목을 제한한다. 
+ 
+```python
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE,
+                             limit_choices_to={'is_public':True})
+```
