@@ -8,6 +8,7 @@
 [5. QuerySet의 정렬 및 범위 조건](#QuerySet의-정렬-및-범위-조건)   
 [6. django-debug-toolbar](#django-debug-toolbar)   
 [7. ForeignKey](#ForeignKey)  
+[8. ManyToManyField](#ManyToManyField)  
 
 장고 모델 (ORM) 소개 
 ---
@@ -454,3 +455,35 @@ class Profile(models.Model):
     address = models.CharField(max_length=100)
     zipcode = models.CharField(max_length=6) #, validators=[])
 ```
+
+ManyToManyField
+---------------------
+M:N 관계에서 사용한다. 
+두개의 테이블 중 한곳에 셋팅하 된다.
+주로 사용하는 쪽에서 ManytoManyField를 작성한다. 
+on_delete라는 옵션은 없고 blank라는 옵션이 있다. 
+
+ManyToManyField 생성하기 
+```python
+class Post(models.Model):
+    tag_set = models.ManyToManyField('Tag', blank=True) #tag가 없을수도 있어서  blank 지정
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+```
+
+연결된 Field  값 가져오기 
+```python
+from instagram.models import Post, Tag
+post = Post.objects.last()
+post.tag_set.all() #해당 post에 대한 tag 가져오기
+
+tag = Tag.objects.last()
+tag.post_set.all()
+
+```
+
+migration을 하면, 다음과 같이 중간 테이블도 하나 만들어진다. 
+![img.png](images/img.png)
+
