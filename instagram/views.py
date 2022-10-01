@@ -1,3 +1,4 @@
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from .models import Post
 
@@ -11,3 +12,8 @@ def post_list(reqeust):
         'post_list':qs,
         'q':q,
         })
+
+
+def post_detail(request: HttpRequest, pk:int) -> HttpResponse:
+    response = HttpResponse(f'Hello world {pk} !!')
+    return response
