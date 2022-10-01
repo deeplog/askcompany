@@ -8,7 +8,8 @@
 [5. QuerySet의 정렬 및 범위 조건](#QuerySet의-정렬-및-범위-조건)   
 [6. django-debug-toolbar](#django-debug-toolbar)   
 [7. ForeignKey](#ForeignKey)  
-[8. ManyToManyField](#ManyToManyField)  
+[8. OneToOneField](#OneToOneField)
+[9. ManyToManyField](#ManyToManyField)  
 
 장고 모델 (ORM) 소개 
 ---
@@ -484,6 +485,6 @@ tag.post_set.all()
 
 ```
 
-migration을 하면, 다음과 같이 중간 테이블도 하나 만들어진다. 
-![img.png](images/img.png)
+migration을 하면, 다음과 같이 중간 테이블도 하나 만들어진다.    
 
+![img.png](images/img.png)
