@@ -1,9 +1,11 @@
 목차   
 [1. 장고 모델(ORM) 소개](#장고-모델-(ORM)-소개)   
 [2. 장고 모델 필드](#장고-모델-필드)   
-[3. QuerySet을 통한 간단 검색 구현](#QuerySet을-통한-간단-검색-구현)   
-[4. QuerySet의 정렬 및 범위 조건](#QuerySet의-정렬-및-범위-조건)   
-[5. django-debug-toolbar](#django-debug-toolbar)
+[3. Media 파일 다루기](#Media-파일-다루기)
+[4. QuerySet을 통한 간단 검색 구현](#QuerySet을-통한-간단-검색-구현)   
+[5. QuerySet의 정렬 및 범위 조건](#QuerySet의-정렬-및-범위-조건)   
+[6. django-debug-toolbar](#django-debug-toolbar)
+[7. ForeignKey](#ForeignKey)
 
 장고 모델 (ORM) 소개 
 ---
@@ -112,7 +114,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now==True)
+    updated_at = models.DateTimeField(auto_now=True)
     
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -125,7 +127,8 @@ class Tag(models.Model):
 * 직접 유효성 로직을 만들지 말고 장고의 기능을 가져다 쓸 것 !!!
 * validation은 Tight 하게 지정
 
-### Media 파일
+Media 파일 다루기
+-------------------
 FileField/ImageField가 있음
 
 1. models에서 이미지 필드를 지정한다.   
@@ -294,7 +297,7 @@ Execution time: 0.000000s [Database: default]
 ```
 
 django-debug-toolbar
----
+-------------------------
 
 ### 설치
 ```shell
@@ -332,7 +335,7 @@ INTERNAL_IPS = ['127.0.0.1']
 * 운영시에는 settings.DEBUG를 False로 셋팅할 것
 
 ForeignKey
----
+-----------------
 
 ### RDBM에서의 관계 예시
 
