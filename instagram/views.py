@@ -17,3 +17,6 @@ def post_list(reqeust):
 def post_detail(request: HttpRequest, pk:int) -> HttpResponse:
     response = HttpResponse(f'Hello world {pk} !!')
     return response
+
+def archives_year(request, year):
+    return HttpResponse(f"{year}년 archives")
