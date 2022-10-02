@@ -1,5 +1,7 @@
-from django.http import HttpResponse, HttpRequest
-from django.shortcuts import render
+from django.http import HttpResponse, HttpRequest, Http404
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import DetailView
+
 from .models import Post
 
 def post_list(reqeust):
@@ -14,9 +16,19 @@ def post_list(reqeust):
         })
 
 
-def post_detail(request: HttpRequest, pk:int) -> HttpResponse:
-    response = HttpResponse(f'Hello world {pk} !!')
-    return response
+# def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
+#     # try:
+#     #     post = Post.objects.get(pk=pk) # 포스트 하나를 얻는다.
+#     # except Post.DoesNotExist: # DoesNotExist 예외 처리
+#     #     raise Http404
+#
+#     post= get_object_or_404(Post, pk=pk) #예외처리 간단하게 하는 방법
+#     return render(request, 'instagram/post_detail.html', {
+#         'post':post,
+#     })
+
+
+post_detail = DetailView.as_view(model=Post)
 
 def archives_year(request, year):
     return HttpResponse(f"{year}년 archives")

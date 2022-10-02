@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.http import HttpRequest, HttpResponse
 
 
 class Post(models.Model):
@@ -35,6 +36,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
 
 
 
