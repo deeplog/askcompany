@@ -15,6 +15,9 @@
         <tbody>
             {% for post in post_list %}
                 <tr>
+                <td>
+                    {{ post.pk }}
+                </td>
                     <td>
                         {% if post.photo %}
                             <img src="{{ post.photo.url}}" style="width: 100px;"/>
@@ -29,5 +32,7 @@
             {% endfor %}
         </tbody>
     </table>
+    {{ is_paginated }}
+    {{ page_obj }}
 </body>
 </html>
