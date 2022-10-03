@@ -16,5 +16,7 @@ urlpatterns = [
     path('<int:pk>/', views.post_detail),
     #path('archives/<int:year>/', views.archives_year), # path 사용하기
     #re_path(r'archives/(?P<year>20\d{2})/', views.archives_year) # 정규식 사용하기
-    path(r'archives/<year:year>/', views.archives_year) #custom converter 사용하기
+    # path(r'archives/<year:year>/', views.archives_year) #custom converter 사용하기
+    path('archive/', views.post_archive, name='post_archive'),
+    path('archive/<year:year>/', views.post_archive_year, name='post_archive_year'),
 ]
