@@ -1,9 +1,13 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpRequest, Http404
 from django.shortcuts import render, get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView
 
 from .models import Post
 
+# @login_required
 # def post_list(reqeust):
 #     qs = Post.objects.all()
 #     q = reqeust.GET.get('q','') # q key가 있으면 가져오고, 없으면 ''
@@ -15,8 +19,24 @@ from .models import Post
 #         'q':q,
 #         })
 
+# login_required 추천하는 방법
+# @method_decorator(login_required, name='dispatch')
+# class PostListView(ListView):
+#     model = Post
+#     paginate_by = 10
+
+class PostListview(LoginRequiredMixin, ListView):
+    model = Post
+    paginate_by = 10
+
+class PostListView(ListView):
+    model = Post
+    paginate_by = 10
+
+post_list = PostListView.as_view()
+
 #ListView 활용
-post_list = ListView.as_view(model=Post, paginate_by=10)
+# post_list = ListView.as_view(model=Post, paginate_by=10)
 
 
 # def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
