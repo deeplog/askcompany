@@ -27,7 +27,12 @@
                         {% endif%}
                     </td>
                     <td>
-                        {{ post.message }}
+                        <a href={{ post.get_absolute_url }}>
+{#                        <a href="{% url "instagram:post_detail" post.pk %}">#}
+{#                        <a href="/instagram/{{ post.id }}">#}
+                            {{ post.message }}
+                        </a>
+
                     </td>
                 </tr>
             {% endfor %}

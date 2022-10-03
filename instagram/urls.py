@@ -13,7 +13,7 @@ app_name = 'instagram' # URL Reverse에서 Name Spaece 역할을 함
 
 urlpatterns = [
     path('', views.post_list, name='post_list'),
-    path('<int:pk>/', views.post_detail),
+    path('<int:pk>/', views.post_detail, name='post_detail'),
     #path('archives/<int:year>/', views.archives_year), # path 사용하기
     #re_path(r'archives/(?P<year>20\d{2})/', views.archives_year) # 정규식 사용하기
     # path(r'archives/<year:year>/', views.archives_year) #custom converter 사용하기

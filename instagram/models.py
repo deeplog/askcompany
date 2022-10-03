@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.http import HttpRequest, HttpResponse
+from django.urls import reverse
 
 
 class Post(models.Model):
@@ -15,6 +16,9 @@ class Post(models.Model):
     # 객체에 대한 문자열 제공
     def __str__(self):
          return f"{self.message}"
+
+    def get_absolute_url(self):
+        return reverse('instagram:post_detail', args =[self.pk])
 
     def message_length(self):
         return len(self.message)
