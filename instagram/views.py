@@ -25,13 +25,13 @@ from .models import Post
 #     model = Post
 #     paginate_by = 10
 
-class PostListview(LoginRequiredMixin, ListView):
+class PostListView(LoginRequiredMixin, ListView):
     model = Post
-    paginate_by = 10
+    paginate_by = 100
 
-class PostListView(ListView):
-    model = Post
-    paginate_by = 10
+# class PostListView(ListView):
+#     model = Post
+#     paginate_by = 100
 
 post_list = PostListView.as_view()
 

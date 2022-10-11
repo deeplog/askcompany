@@ -1,13 +1,12 @@
-{% load bootstrap4 %}
-<!doctype html>
-<html lang="ko">
-<head>
-    <meta charset="utf-8"/>
-    <title>Instagram / Post List</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-</head>
-<body>
-    <form action="" method="get">
+{% extends "instagram/layout.html" %}
+{%  load bootstrap4 %}
+
+{% block title %}
+    Instagram / Post List
+{% endblock title %}
+
+{% block content %}
+       <form action="" method="get">
         <input type="text" name="q" value="{{ q }}"/>
         <input type="submit" value="검색"/>
     </form>
@@ -43,5 +42,5 @@
     {% if is_paginated %}
         {% bootstrap_pagination page_obj size="medium" justify_content="center"%}
     {% endif %}
-</body>
-</html>
+{% endblock content %}
+
