@@ -1,5 +1,6 @@
+{% load django_bootstrap5 static %}
+
 <!doctype html>
-{% load static %}
 <html lang="ko">
 <head>
     <meta charset="utf-8"/>
@@ -44,6 +45,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
+            {% bootstrap_messages %}
                 {% block content %}
                 {% endblock content%}
                 <hr/>

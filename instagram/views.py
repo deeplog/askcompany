@@ -17,6 +17,7 @@ def post_new(request):
             post = form.save(commit=False)
             post.author = request.user  # 현재 로그인 User Instance
             post.save()
+            messages.success(request, "포스팅을 저장했습니다.")
             return redirect(post)  # 저장을 하고 이동이 되게 한다.
     else:
         form = PostForm()
@@ -26,6 +27,7 @@ def post_new(request):
         "instagram/post_form.html",  # 폼을 보여준다.
         {
             "form": form,
+            "post": None,
         },
     )
 
@@ -43,6 +45,7 @@ def post_edit(request, pk):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save()
+            messages.success(request, "포스팅을 수정했습니다.")
             return redirect(post)
     else:
         form = PostForm(instance=post)
@@ -52,6 +55,7 @@ def post_edit(request, pk):
         "instagram/post_form.html",
         {
             "form": form,
+            "post": post,
         },
     )
 
