@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpRequest, Http404
@@ -13,7 +14,9 @@ def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save()  # 방금 저장한 모델 인스턴스 반환
+            post = form.save(commit=False)
+            post.author = request.user  # 현재 로그인 User Instance
+            post.save()
             return redirect(post)  # 저장을 하고 이동이 되게 한다.
     else:
         form = PostForm()
@@ -21,6 +24,32 @@ def post_new(request):
     return render(
         request,
         "instagram/post_form.html",  # 폼을 보여준다.
+        {
+            "form": form,
+        },
+    )
+
+
+@login_required
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    # 작성자 Check Tip
+    if post.author != request.user:
+        messages.error(request, "작성자만 수정할 수 있습니다.")
+        return redirect(post)
+
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save()
+            return redirect(post)
+    else:
+        form = PostForm(instance=post)
+
+    return render(
+        request,
+        "instagram/post_form.html",
         {
             "form": form,
         },
