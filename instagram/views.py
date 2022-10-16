@@ -1,11 +1,31 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpRequest, Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView, ArchiveIndexView, YearArchiveView
 
 from .models import Post
+from .forms import PostForm
+
+
+def post_new(request):
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save()  # 방금 저장한 모델 인스턴스 반환
+            return redirect(post)  # 저장을 하고 이동이 되게 한다.
+    else:
+        form = PostForm()
+
+    return render(
+        request,
+        "instagram/post_form.html",  # 폼을 보여준다.
+        {
+            "form": form,
+        },
+    )
+
 
 # @login_required
 # def post_list(reqeust):
@@ -25,9 +45,11 @@ from .models import Post
 #     model = Post
 #     paginate_by = 10
 
+
 class PostListView(LoginRequiredMixin, ListView):
     model = Post
     paginate_by = 100
+
 
 # class PostListView(ListView):
 #     model = Post
@@ -35,7 +57,7 @@ class PostListView(LoginRequiredMixin, ListView):
 
 post_list = PostListView.as_view()
 
-#ListView 활용
+# ListView 활용
 # post_list = ListView.as_view(model=Post, paginate_by=10)
 
 
@@ -51,9 +73,9 @@ post_list = PostListView.as_view()
 #     })
 
 
-#post_detail = DetailView.as_view(model=Post)
+# post_detail = DetailView.as_view(model=Post)
 
-#get_queryset 재정의
+# get_queryset 재정의
 class PostDetailView(DetailView):
     model = Post
 
@@ -63,11 +85,16 @@ class PostDetailView(DetailView):
             qs = qs.filter(is_public=True)
         return qs
 
+
 post_detail = PostDetailView.as_view()
 
 # def archives_year(request, year):
 #     return HttpResponse(f"{year}년 archives")
 
-post_archive = ArchiveIndexView.as_view(model=Post, date_field='created_at', paginate_by=10)
+post_archive = ArchiveIndexView.as_view(
+    model=Post, date_field="created_at", paginate_by=10
+)
 
-post_archive_year = YearArchiveView.as_view(model=Post, date_field='created_at', make_object_list=True)
+post_archive_year = YearArchiveView.as_view(
+    model=Post, date_field="created_at", make_object_list=True
+)

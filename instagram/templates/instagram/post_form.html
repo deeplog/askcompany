@@ -1,0 +1,8 @@
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!-- 폼을 쓸때는 테이블로 감싸야 된다. -->
+    <table>
+        {{ form }}
+    </table>
+    <input type="submit" value="저장" />
+</form>

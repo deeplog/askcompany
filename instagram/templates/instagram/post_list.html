@@ -6,10 +6,17 @@
 {% endblock title %}
 
 {% block content %}
-       <form action="" method="get">
+    <form action="" method="get">
         <input type="text" name="q" value="{{ q }}"/>
         <input type="submit" value="검색"/>
     </form>
+
+    <!-- margin top과 bottom을 주고 버튼에 스타일을 적용하였다. -->
+    <a href="{% url 'instagram:post_new' %}" class="btn btn-primary btn-block mt-3 mb-3">
+        새 포스팅
+    </a>
+
+
 
     <table class="table table-bordered table-hover">
         <tbody>
